@@ -220,6 +220,7 @@ class FlutterGoldenTestAdapter extends GoldenTestAdapter {
     Key? rootKey,
     required WidgetTester tester,
     required double textScaleFactor,
+    // TODO(Kirpal): Check to see if constraints can be removed.
     required BoxConstraints constraints,
     required ThemeData theme,
     required Widget widget,

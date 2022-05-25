@@ -29,10 +29,16 @@ typedef ColumnWidthBuilder = TableColumnWidth? Function(int columns);
 /// Returning `null` will tell the table to use the default column width for the
 /// column at the given index.
 ///
+/// The [childConstraints] parameter, if provided, will be applied to each child
+/// in the [children]. If set, every child will be constrained according to
+/// these constraints. Otherwise, the children will only be constrained
+/// based on each column's width according to the [columnWidthBuilder].
+///
 /// See also:
 /// * [GoldenTestScenario], which describes a single test scenario or state of
 ///   widget that should be included in a golden test group.
 ///
+/// TODO(jeroen-meijer): Update docs.
 /// {@endtemplate}
 class GoldenTestGroup extends StatelessWidget {
   /// {@macro golden_test_group}
@@ -40,6 +46,7 @@ class GoldenTestGroup extends StatelessWidget {
     super.key,
     this.columns,
     this.columnWidthBuilder,
+    this.childConstraints,
     required this.children,
   });
 
@@ -63,6 +70,14 @@ class GoldenTestGroup extends StatelessWidget {
   ///
   /// See [Table.columnWidths] for details.
   final ColumnWidthBuilder? columnWidthBuilder;
+
+  /// An optional set of constraints that will be applied to each child in the
+  /// [children].
+  ///
+  /// If set, every child will be constrained according to these constraints.
+  /// Otherwise, the children will only be constrained based on each column's
+  /// width according to the [columnWidthBuilder].
+  final BoxConstraints? childConstraints;
 
   /// The scenarios to display in this test group.
   ///
@@ -107,7 +122,10 @@ class GoldenTestGroup extends StatelessWidget {
             children: [
               for (int j = 0; j < _effectiveColumns; j++)
                 if (i * _effectiveColumns + j < children.length)
-                  children[i * _effectiveColumns + j]
+                  ConstrainedBox(
+                    constraints: childConstraints ?? const BoxConstraints(),
+                    child: children[i * _effectiveColumns + j],
+                  )
                 else
                   const SizedBox.shrink(),
             ],
