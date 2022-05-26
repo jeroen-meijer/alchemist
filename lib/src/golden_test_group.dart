@@ -38,7 +38,6 @@ typedef ColumnWidthBuilder = TableColumnWidth? Function(int columns);
 /// * [GoldenTestScenario], which describes a single test scenario or state of
 ///   widget that should be included in a golden test group.
 ///
-/// TODO(jeroen-meijer): Update docs.
 /// {@endtemplate}
 class GoldenTestGroup extends StatelessWidget {
   /// {@macro golden_test_group}
